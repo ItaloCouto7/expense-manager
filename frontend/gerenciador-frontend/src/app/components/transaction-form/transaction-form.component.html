@@ -1,0 +1,32 @@
+<form [formGroup]="transactionForm" (ngSubmit)="submit()">
+
+  <label>
+    Tipo:
+    <select formControlName="type">
+      <option value="entrada">Entrada</option>
+      <option value="saida">Saída</option>
+    </select>
+  </label>
+
+  <label>
+    Categoria:
+    <input type="text" formControlName="category" required />
+  </label>
+
+  <label>
+    Valor:
+    <input type="number" formControlName="amount" required min="0.01" step="0.01" />
+  </label>
+
+  <label>
+    Data:
+    <input type="date" formControlName="date" required />
+  </label>
+
+  <label>
+    Descrição:
+    <textarea formControlName="description"></textarea>
+  </label>
+
+  <button type="submit" [disabled]="transactionForm.invalid">Adicionar</button>
+</form>
