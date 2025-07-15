@@ -1,26 +1,30 @@
-<h2>Transações</h2>
+<section class="transactions-section">
+  <h2>Transações</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Tipo</th>
-      <th>Categoria</th>
-      <th>Valor</th>
-      <th>Data</th>
-      <th>Descrição</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let t of transactions">
-      <td>{{ t.type }}</td>
-      <td>{{ t.category }}</td>
-      <td>{{ formatCurrency(t.amount) }}</td>
-      <td>{{ t.date }}</td>
-      <td>{{ t.description }}</td>
-      <td>
-        <button (click)="deleteTransaction(t.id)">Excluir</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <div class="table-container">
+    <table class="transactions-table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Categoria</th>
+          <th>Valor</th>
+          <th>Data</th>
+          <th>Descrição</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of transactions">
+          <td>{{ t.type }}</td>
+          <td>{{ t.category }}</td>
+          <td>{{ formatCurrency(t.amount) }}</td>
+          <td>{{ t.date }}</td>
+          <td>{{ t.description }}</td>
+          <td>
+            <button class="delete-btn" (click)="deleteTransaction(t.id)">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
