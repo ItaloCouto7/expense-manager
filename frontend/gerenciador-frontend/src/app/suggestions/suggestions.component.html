@@ -1,0 +1,8 @@
+<section class="suggestions">
+  <h3>Sugestões para você</h3>
+  <p *ngIf="suggestions; else noSuggestions">{{ suggestions }}</p>
+
+  <ng-template #noSuggestions>
+    <p>Nenhuma sugestão disponível no momento.</p>
+  </ng-template>
+</section>

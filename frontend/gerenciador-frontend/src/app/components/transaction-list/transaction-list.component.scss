@@ -17,6 +17,42 @@
     background: #fff;
   }
 
+  .loading-indicator {
+  text-align: center;
+  padding: 1rem;
+  font-weight: 600;
+  color: #1783dc;
+}
+
+.success-message {
+  text-align: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: #1783dc;
+  font-weight: 600;
+  border: 1px solid #1783dc;
+  border-radius: 6px;
+  background-color: #d4edda;
+}
+
+.error-message {
+  text-align: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: #dc3545;
+  font-weight: 600;
+  border: 1px solid #dc3545;
+  border-radius: 6px;
+  background-color: #f8d7da;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+  font-style: italic;
+}
+
   .transactions-table {
     width: 100%;
     border-collapse: collapse;

@@ -1,7 +1,12 @@
 <section class="transactions-section">
   <h2>Transações</h2>
 
-  <div class="table-container">
+  <div *ngIf="loading" class="loading-indicator">Carregando...</div>
+
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <div class="table-container" *ngIf="!loading && transactions.length > 0">
     <table class="transactions-table">
       <thead>
         <tr>
@@ -22,9 +27,23 @@
           <td>{{ t.description }}</td>
           <td>
             <button class="delete-btn" (click)="deleteTransaction(t.id)">Excluir</button>
+            <div class="suggestions">
+  <button (click)="getSuggestions()" [disabled]="loading">Gerar Sugestões</button>
+
+  <div *ngIf="loading">Carregando sugestões...</div>
+
+  <pre *ngIf="suggestionsText">{{ suggestionsText }}</pre>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+</div>
+
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="!loading && transactions.length === 0" class="no-data">
+    Nenhuma transação encontrada.
   </div>
 </section>
