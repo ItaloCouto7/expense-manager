@@ -1,107 +1,613 @@
+// Variáveis principais (reutilizando do formulário)
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$success-color: #10b981;
+$error-color: #ef4444;
+$warning-color: #f59e0b;
+$danger-color: #dc2626;
+$danger-hover: #b91c1c;
+$neutral-50: #f9fafb;
+$neutral-100: #f3f4f6;
+$neutral-200: #e5e7eb;
+$neutral-300: #d1d5db;
+$neutral-400: #9ca3af;
+$neutral-500: #6b7280;
+$neutral-600: #4b5563;
+$neutral-700: #374151;
+$neutral-800: #1f2937;
+$neutral-900: #111827;
+
+// Transições e animações
+$transition-fast: 0.15s ease;
+$transition-normal: 0.3s ease;
+$border-radius: 12px;
+$border-radius-sm: 8px;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Mixins úteis
+@mixin focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  border-color: $primary-color;
+}
+
+h2 {
+  color: $primary-hover !important;
+}
+
+.loading {
+  color: $neutral-300;
+}
+
+.economy-section {
+  color: $neutral-300;
+}
+
+.tips-section {
+  color: $neutral-300;
+}
+
+.analysis-section {
+  color: $neutral-300;
+}
+
+.analysis-text {
+    color: $neutral-300;
+}
+
+@mixin button-base {
+  padding: 0.5rem 1rem;
+  border-radius: $border-radius-sm;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-normal;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.3);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
 .transactions-section {
-  max-width: 1000px;
-  margin: 3rem auto;
-  padding: 1rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 
   h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $neutral-900;
+    margin: 0 0 2rem 0;
     text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-size: 1.8rem;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4rem;
+      height: 3px;
+      background: linear-gradient(90deg, $primary-color, #7c3aed);
+      border-radius: 2px;
+    }
   }
 
-  .table-container {
-    overflow-x: auto;
-    border-radius: 1rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    background: #fff;
-  }
-
+  // Estados de feedback (mantendo consistência com o formulário)
   .loading-indicator {
-  text-align: center;
-  padding: 1rem;
-  font-weight: 600;
-  color: #1783dc;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, rgba($warning-color, 0.1), rgba($warning-color, 0.05));
+    border: 1px solid rgba($warning-color, 0.2);
+    border-radius: $border-radius-sm;
+    color: darken($warning-color, 10%);
+    font-weight: 500;
+    animation: pulse 2s infinite;
 
-.success-message {
-  text-align: center;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  color: #1783dc;
-  font-weight: 600;
-  border: 1px solid #1783dc;
-  border-radius: 6px;
-  background-color: #d4edda;
-}
+    &::before {
+      content: '';
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid rgba($warning-color, 0.3);
+      border-top-color: $warning-color;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
 
-.error-message {
-  text-align: center;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  color: #dc3545;
-  font-weight: 600;
-  border: 1px solid #dc3545;
-  border-radius: 6px;
-  background-color: #f8d7da;
-}
+  .success-message {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, rgba($success-color, 0.1), rgba($success-color, 0.05));
+    border: 1px solid rgba($success-color, 0.3);
+    border-radius: $border-radius-sm;
+    color: darken($success-color, 15%);
+    font-weight: 500;
+    position: relative;
 
-.no-data {
-  text-align: center;
-  padding: 2rem;
-  color: #888;
-  font-style: italic;
-}
+    &::before {
+      content: '✓';
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: bold;
+      color: $success-color;
+      font-size: 1.125rem;
+    }
 
+    padding-left: 2.75rem;
+  }
+
+  .error-message {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, rgba($error-color, 0.1), rgba($error-color, 0.05));
+    border: 1px solid rgba($error-color, 0.3);
+    border-radius: $border-radius-sm;
+    color: darken($error-color, 10%);
+    font-weight: 500;
+    position: relative;
+
+    &::before {
+      content: '!';
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: bold;
+      color: $error-color;
+      font-size: 1.125rem;
+    }
+
+    padding-left: 2.75rem;
+  }
+
+  // Container da tabela
+  .table-container {
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-lg;
+    border: 1px solid $neutral-100;
+    overflow: hidden;
+    position: relative;
+
+    // Efeito gradiente sutil no topo
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, $primary-color, #7c3aed, #ec4899);
+      z-index: 1;
+    }
+  }
+
+  // Tabela principal
   .transactions-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 700px;
+    font-size: 0.9rem;
 
+    // Cabeçalho da tabela
     thead {
-      background-color: #1783dc;
-      color: white;
+      background: linear-gradient(135deg, $neutral-50, white);
+      position: relative;
+
+      tr {
+        border-bottom: 2px solid $neutral-200;
+      }
 
       th {
-        padding: 1rem;
+        padding: 1.25rem 1rem;
         text-align: left;
         font-weight: 600;
+        color: $neutral-700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        position: relative;
+
+        &:first-child {
+          border-top-left-radius: $border-radius;
+        }
+
+        &:last-child {
+          border-top-right-radius: $border-radius;
+        }
+
+        // Separador sutil entre colunas
+        &:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 25%;
+          bottom: 25%;
+          width: 1px;
+          background: $neutral-200;
+        }
       }
     }
 
+    // Corpo da tabela
     tbody {
       tr {
-        transition: background 0.3s;
+        border-bottom: 1px solid $neutral-100;
+        transition: all $transition-normal;
 
         &:hover {
-          background-color: #f5f5f5;
+          background: linear-gradient(135deg, rgba($primary-color, 0.02), rgba($primary-color, 0.01));
+          transform: scale(1.002);
+          box-shadow: inset 0 0 0 1px rgba($primary-color, 0.1);
         }
 
-        td {
-          padding: 0.9rem 1rem;
-          border-top: 1px solid #eee;
-          color: #444;
+        &:last-child {
+          border-bottom: none;
         }
+      }
 
-        td:first-child {
+      td {
+        padding: 1rem;
+        color: $neutral-600;
+        vertical-align: middle;
+        font-weight: 400;
+
+        // Primeira coluna (Tipo) - badge estilizado
+        &:first-child {
+          font-weight: 600;
           text-transform: capitalize;
+
+          // Podemos adicionar badges coloridos baseado no tipo
+          &[data-type="entrada"] {
+            color: $success-color;
+
+            &::before {
+              content: '↗';
+              margin-right: 0.5rem;
+              font-weight: bold;
+            }
+          }
+
+          &[data-type="saida"] {
+            color: $error-color;
+
+            &::before {
+              content: '↙';
+              margin-right: 0.5rem;
+              font-weight: bold;
+            }
+          }
         }
 
-        .delete-btn {
-          padding: 0.4rem 0.8rem;
-          background-color: #ff4d4f;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 0.9rem;
-          transition: background-color 0.3s;
+        // Coluna de valor - destaque
+        &:nth-child(3) {
+          font-weight: 600;
+          font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+        }
 
-          &:hover {
-            background-color: #d9363e;
+        // Coluna de data
+        &:nth-child(4) {
+          color: $neutral-500;
+          font-size: 0.875rem;
+        }
+
+        // Coluna de descrição
+        &:nth-child(5) {
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        // Coluna de ações
+        &:last-child {
+          text-align: center;
+          padding: 0.75rem;
+        }
+      }
+    }
+  }
+
+  // Botão de exclusão
+  .delete-btn {
+    @include button-base;
+    background: linear-gradient(135deg, $danger-color, darken($danger-color, 5%));
+    color: white;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, $danger-hover, darken($danger-hover, 5%));
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  // Seção de sugestões
+  .suggestions {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-md;
+    border: 1px solid $neutral-100;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: $border-radius $border-radius 0 0;
+    }
+
+    button {
+      @include button-base;
+      background: linear-gradient(135deg, $success-color, darken($success-color, 5%));
+      color: white;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, darken($success-color, 5%), darken($success-color, 10%));
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+      }
+    }
+
+    pre {
+      background: $neutral-50;
+      padding: 1rem;
+      border-radius: $border-radius-sm;
+      border: 1px solid $neutral-200;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: $neutral-700;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      margin: 0;
+    }
+
+    .error {
+      padding: 0.875rem 1rem;
+      background: linear-gradient(135deg, rgba($error-color, 0.1), rgba($error-color, 0.05));
+      border: 1px solid rgba($error-color, 0.3);
+      border-radius: $border-radius-sm;
+      color: darken($error-color, 10%);
+      font-weight: 500;
+    }
+  }
+
+  // Estado vazio
+  .no-data {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-md;
+    border: 1px solid $neutral-100;
+    color: $neutral-500;
+    font-size: 1.1rem;
+
+    &::before {
+      content: '📊';
+      display: block;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+  }
+}
+
+// Animações
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsividade
+@media (max-width: 1024px) {
+  .transactions-section {
+    .table-container {
+      overflow-x: auto;
+
+      .transactions-table {
+        min-width: 700px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .transactions-section {
+    padding: 0 0.5rem;
+    margin: 1rem auto;
+
+    h2 {
+      font-size: 1.75rem;
+    }
+
+    .table-container {
+      border-radius: $border-radius-sm;
+
+      .transactions-table {
+        font-size: 0.8rem;
+
+        thead th {
+          padding: 1rem 0.5rem;
+          font-size: 0.7rem;
+        }
+
+        tbody td {
+          padding: 0.75rem 0.5rem;
+
+          &:nth-child(5) {
+            max-width: 150px;
           }
         }
       }
+    }
+
+    .delete-btn {
+      padding: 0.4rem 0.7rem;
+      font-size: 0.75rem;
+    }
+
+    .suggestions {
+      padding: 1rem;
+      margin-top: 1rem;
+
+      button {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .transactions-section {
+    .table-container {
+      .transactions-table {
+        thead th {
+          padding: 0.75rem 0.4rem;
+        }
+
+        tbody td {
+          padding: 0.6rem 0.4rem;
+        }
+      }
+    }
+
+    .delete-btn {
+      padding: 0.35rem 0.6rem;
+      font-size: 0.7rem;
+    }
+  }
+}
+
+// Modo escuro (opcional)
+@media (prefers-color-scheme: dark) {
+  .transactions-section {
+    h2 {
+      color: white;
+    }
+
+    .table-container {
+      background: $neutral-900;
+      border-color: $neutral-800;
+
+      .transactions-table {
+        thead {
+          background: linear-gradient(135deg, $neutral-800, $neutral-900);
+
+          th {
+            color: $neutral-300;
+            border-bottom-color: $neutral-700;
+
+            &::after {
+              background: $neutral-700;
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            border-bottom-color: $neutral-800;
+
+            &:hover {
+              background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($primary-color, 0.05));
+            }
+          }
+
+          td {
+            color: $neutral-300;
+
+            &:nth-child(4) {
+              color: $neutral-400;
+            }
+          }
+        }
+      }
+    }
+
+    .suggestions {
+      background: $neutral-900;
+      border-color: $neutral-800;
+
+      pre {
+        background: $neutral-800;
+        border-color: $neutral-700;
+        color: $neutral-300;
+      }
+    }
+
+    .no-data {
+      background: $neutral-900;
+      border-color: $neutral-800;
+      color: $neutral-400;
     }
   }
 }

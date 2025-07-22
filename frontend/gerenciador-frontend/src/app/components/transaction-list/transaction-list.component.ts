@@ -4,7 +4,7 @@ import {
   ITransaction,
 } from '../../services/transaction.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { SuggestionService } from '../../services/openai.service';
+import { SuggestionData, SuggestionService } from '../../services/openai.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -24,15 +24,19 @@ export class TransactionListComponent implements OnInit {
   constructor(private transactionService: TransactionService, private currencyPipe: CurrencyPipe,   private suggestionService: SuggestionService,
 ) {}
 
+  suggestionData?: SuggestionData;
+
   ngOnInit(): void {
     this.loadTransactions();
   }
 
-  getSuggestions(): void {
+
+getSuggestions(): void {
   this.loading = true;
   this.suggestionsText = '';
   this.errorMessage = '';
   this.successMessage = '';
+  this.suggestionData = undefined;
 
   const summary = {
     totalByCategory: this.getTotalByCategory(),
@@ -41,15 +45,32 @@ export class TransactionListComponent implements OnInit {
   };
 
   this.suggestionService.getSuggestions(summary).subscribe({
-    next: (res) => {
+  next: (res) => {
+  if (res.data) {
+    this.suggestionData = res.data;
+    this.suggestionsText = '';
+  } else if (res.suggestions) {
+    try {
+      // Limpa as crases e prefixos do markdown
+      let cleanString = res.suggestions
+        .replace(/^```json\s*/, '') // remove o ```json no início
+        .replace(/```$/, '');       // remove as crases no final
+
+      this.suggestionData = JSON.parse(cleanString);
+      this.suggestionsText = '';
+    } catch (e) {
+      console.error('Erro ao parsear JSON:', e);
+      this.suggestionData = undefined;
       this.suggestionsText = res.suggestions;
-      this.loading = false;
-    },
-    error: () => {
-      this.errorMessage = 'Erro ao obter sugestões.';
-      this.loading = false;
     }
-  });
+  } else {
+    this.suggestionData = undefined;
+    this.suggestionsText = '';
+  }
+  this.loading = false;
+}
+});
+
 }
 
 getTotalByCategory(): Record<string, number> {

@@ -2,9 +2,44 @@
   <h2>Transações</h2>
 
   <div *ngIf="loading" class="loading-indicator">Carregando...</div>
-
   <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- Botão e sugestões fora da tabela -->
+  <div class="suggestions">
+    <button (click)="getSuggestions()" [disabled]="loading">Gerar Sugestões</button>
+
+    <div class="loading" *ngIf="loading">Carregando sugestões...</div>
+
+   <!-- Se vier texto simples (fallback) -->
+<pre *ngIf="suggestionsText">{{ suggestionsText }}</pre>
+
+<div *ngIf="suggestionData" class="structured-content">
+  <div class="analysis-section">
+    <h4><span class="icon">📊</span> Análise</h4>
+    <p class="analysis-text">{{ suggestionData.analise }}</p>
+  </div>
+
+  <div class="tips-section">
+    <h4><span class="icon">💡</span> Sugestões</h4>
+    <ul class="tips-list">
+      <li *ngFor="let s of suggestionData.sugestoes" class="tip-item">
+        <div class="tip-number">{{ s.id }}</div>
+        <div class="tip-text">
+          <strong>{{ s.titulo }}</strong><br />
+          <small>{{ s.descricao }}</small>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="economy-section">
+    <h4><span class="icon">💰</span> Economia Estimada</h4>
+    <p class="economy-text">{{ suggestionData.economia_estimada }}</p>
+  </div>
+</div>
+
+  </div>
 
   <div class="table-container" *ngIf="!loading && transactions.length > 0">
     <table class="transactions-table">
@@ -27,16 +62,6 @@
           <td>{{ t.description }}</td>
           <td>
             <button class="delete-btn" (click)="deleteTransaction(t.id)">Excluir</button>
-            <div class="suggestions">
-  <button (click)="getSuggestions()" [disabled]="loading">Gerar Sugestões</button>
-
-  <div *ngIf="loading">Carregando sugestões...</div>
-
-  <pre *ngIf="suggestionsText">{{ suggestionsText }}</pre>
-
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-</div>
-
           </td>
         </tr>
       </tbody>

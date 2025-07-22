@@ -1,98 +1,400 @@
-.transaction-form {
-  max-width: 500px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-  font-family: 'Segoe UI', sans-serif;
+// Variáveis principais
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$success-color: #10b981;
+$error-color: #ef4444;
+$warning-color: #f59e0b;
+$neutral-50: #f9fafb;
+$neutral-100: #f3f4f6;
+$neutral-200: #e5e7eb;
+$neutral-300: #d1d5db;
+$neutral-400: #9ca3af;
+$neutral-500: #6b7280;
+$neutral-600: #4b5563;
+$neutral-700: #374151;
+$neutral-800: #1f2937;
+$neutral-900: #111827;
 
-  h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333;
+// Transições e animações
+$transition-fast: 0.15s ease;
+$transition-normal: 0.3s ease;
+$border-radius: 12px;
+$border-radius-sm: 8px;
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Mixins úteis
+@mixin focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  border-color: $primary-color;
+}
+
+@mixin glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.transaction-form {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  border: 1px solid $neutral-100;
+  position: relative;
+  overflow: hidden;
+
+  // Efeito gradiente sutil no fundo
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $primary-color, #7c3aed, #ec4899);
   }
 
-  .form-group {
-    margin-bottom: 1.2rem;
-    display: flex;
-    flex-direction: column;
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $neutral-900;
+    margin: 0 0 2rem 0;
+    text-align: center;
+    position: relative;
 
-    label {
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: #555;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3rem;
+      height: 2px;
+      background: linear-gradient(90deg, $primary-color, #7c3aed);
+      border-radius: 1px;
+    }
+  }
+
+  // Estados de feedback
+  .loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, rgba($warning-color, 0.1), rgba($warning-color, 0.05));
+    border: 1px solid rgba($warning-color, 0.2);
+    border-radius: $border-radius-sm;
+    color: darken($warning-color, 10%);
+    font-weight: 500;
+    animation: pulse 2s infinite;
+
+    &::before {
+      content: '';
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba($warning-color, 0.3);
+      border-top-color: $warning-color;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .success-message {
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, rgba($success-color, 0.1), rgba($success-color, 0.05));
+    border: 1px solid rgba($success-color, 0.3);
+    border-radius: $border-radius-sm;
+    color: darken($success-color, 15%);
+    font-weight: 500;
+    position: relative;
+
+    &::before {
+      content: '✓';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: bold;
+      color: $success-color;
     }
 
-    input,
-    select,
-    textarea {
-      padding: 0.7rem 1rem;
-      border: 1px solid #ccc;
-      border-radius: 0.6rem;
+    padding-left: 2.5rem;
+  }
+
+  .error-message {
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, rgba($error-color, 0.1), rgba($error-color, 0.05));
+    border: 1px solid rgba($error-color, 0.3);
+    border-radius: $border-radius-sm;
+    color: darken($error-color, 10%);
+    font-weight: 500;
+    position: relative;
+
+    &::before {
+      content: '!';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: bold;
+      color: $error-color;
+    }
+
+    padding-left: 2.5rem;
+  }
+
+  // Grupos de formulário
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: $neutral-700;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      letter-spacing: 0.025em;
+      transition: color $transition-fast;
+    }
+
+    // Inputs, selects e textareas
+    input, select, textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid $neutral-200;
+      border-radius: $border-radius-sm;
       font-size: 1rem;
-      transition: border 0.3s;
+      font-family: inherit;
+      background: white;
+      transition: all $transition-normal;
+      box-sizing: border-box;
 
       &:focus {
-        border-color: #1783dc;
-        outline: none;
+        @include focus-ring;
+        transform: translateY(-1px);
+      }
+
+      &:hover:not(:focus) {
+        border-color: $neutral-300;
+      }
+
+      &::placeholder {
+        color: $neutral-400;
       }
     }
 
+    // Estilo específico para select
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+      padding-right: 3rem;
+
+      &:focus {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      }
+
+      option {
+        padding: 0.5rem;
+        background: white;
+        color: $neutral-800;
+      }
+    }
+
+    // Textarea específico
     textarea {
+      min-height: 100px;
       resize: vertical;
-      min-height: 80px;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    // Input de número com ícone
+    input[type="number"] {
+      position: relative;
+
+      &::before {
+        content: 'R$';
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $neutral-500;
+        font-weight: 500;
+        pointer-events: none;
+      }
+    }
+
+    // Estados de validação
+    input.ng-invalid.ng-touched,
+    select.ng-invalid.ng-touched,
+    textarea.ng-invalid.ng-touched {
+      border-color: $error-color;
+      box-shadow: 0 0 0 3px rgba($error-color, 0.1);
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($error-color, 0.2);
+      }
+    }
+
+    input.ng-valid.ng-touched,
+    select.ng-valid.ng-touched,
+    textarea.ng-valid.ng-touched {
+      border-color: $success-color;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($success-color, 0.1);
+      }
     }
   }
 
-  .loading-indicator {
-  color: #1783dc;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.success-message {
-  color: #28a745;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  border: 1px solid #28a745;
-  background-color: #d4edda;
-  padding: 0.75rem;
-  border-radius: 6px;
-  text-align: center;
-}
-
-.error-message {
-  color: #dc3545;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  border: 1px solid #dc3545;
-  background-color: #f8d7da;
-  padding: 0.75rem;
-  border-radius: 6px;
-  text-align: center;
-}
-
-
-  button {
+  // Botão de submit
+  button[type="submit"] {
     width: 100%;
-    padding: 0.9rem;
-    background-color: #1783dc;
-    color: #fff;
-    font-size: 1rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 5%));
+    color: white;
     border: none;
-    border-radius: 0.6rem;
+    border-radius: $border-radius-sm;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all $transition-normal;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.025em;
+    margin-top: 1rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
 
     &:hover:not(:disabled) {
-      background-color: #1783dc;
+      background: linear-gradient(135deg, $primary-hover, darken($primary-hover, 5%));
+      transform: translateY(-2px);
+      box-shadow: $shadow-lg;
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: $shadow-md;
     }
 
     &:disabled {
-      background-color: #ccc;
+      background: linear-gradient(135deg, $neutral-300, $neutral-400);
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.3), $shadow-md;
+    }
+  }
+}
+
+// Animações
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsividade
+@media (max-width: 640px) {
+  .transaction-form {
+    margin: 1rem;
+    padding: 1.5rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+
+      input, select, textarea {
+        padding: 0.75rem;
+      }
+    }
+
+    button[type="submit"] {
+      padding: 0.875rem 1.5rem;
+    }
+  }
+}
+
+// Modo escuro (opcional)
+@media (prefers-color-scheme: dark) {
+  .transaction-form {
+    background: $neutral-900;
+    border-color: $neutral-800;
+
+    h2 {
+      color: white;
+    }
+
+    .form-group {
+      label {
+        color: $neutral-300;
+      }
+
+      input, select, textarea {
+        background: $neutral-800;
+        border-color: $neutral-700;
+        color: white;
+
+        &::placeholder {
+          color: $neutral-500;
+        }
+
+        &:focus {
+          border-color: $primary-color;
+          background: $neutral-700;
+        }
+      }
     }
   }
 }
