@@ -68,5 +68,17 @@ npm install
 ng serve
 ```
 
+### ▶️ Subir o banco de dados
+Execute o comando abaixo para iniciar o container:
+
+```bash
+docker-compose up -d
+```
+Esse comando irá:
+
+Subir um container com o MySQL 8, criando automaticamente o banco gastos_db.
+
+Subir o phpMyAdmin na porta 8080 para acessar visualmente os dados do banco.
+
 ### 🧑‍💻 Autor
 **Desenvolvido por Ítalo Coutinho.**
