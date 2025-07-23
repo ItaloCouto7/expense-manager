@@ -52,7 +52,7 @@ php artisan migrate
 # Iniciar servidor local
 php artisan serve
 ```
-Importante: Adicione sua chave do Geminni no .env:
+Importante: Adicione sua chave do Gemini no .env:
 
 ```env
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxx
